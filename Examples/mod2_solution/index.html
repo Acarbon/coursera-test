@@ -1,9 +1,11 @@
 <!doctype html>
-<html lang="en" ng-app='ShoppingListCheckOff'>
+<html lang="en">
   <head>
     <title>Shopping List Check Off</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="styles/bootstrap.min.css">
+    <script src="angular.min.js"></script>
+    <script src="app.js"></script>
     <style>
       .emptyMessage {
         font-weight: bold;
@@ -21,29 +23,31 @@
         color: green;
       }
     </style>
+
   </head>
-<body>
+<body ng-app="ShoppingListCheckOff">
   <div class="container">
   <h1>Shopping List Check Off</h1>
 
   <div class="row">
 
     <!-- To Buy List -->
-    <div  id="list1"  class="col-md-6" ng-controller='ToBuyController as list1'>
+    <div class="col-md-6" ng-controller="ToBuyShoppingController as ItemsToBuy">
      <h2>To Buy:</h2>
      <ul>
-      <li ng-repeat="item in list1.items">Buy {{item.quantity}} {{item.name}}(s)<button class="btn btn-default" ng-click="list1.boughtItem($index);"><span class="glyphicon glyphicon-ok"></span> Bought</button></li>
+       <li ng-repeat="item in ItemsToBuy.ShoppingList()">Buy {{item.quantity}} {{item.name}}<button class="btn btn-default" ng-click="ItemsToBuy.BuyItem($index)"><span class="glyphicon glyphicon-ok"></span> Bought</button></li>
      </ul>
-     <div ng-hide="!list1.Message" class="emptyMessage">{{list1.Message}}</div>
+     <div class="emptyMessage" ng-if="ItemsToBuy.ShoppingListEmpty()">Everything is bought!</div>
     </div>
 
     <!-- Already Bought List -->
-    <div  id="list2"  class="col-md-6" ng-controller='AlreadyBoughtController as list2'>
+    <div class="col-md-6" ng-controller="AlreadyBoughtShoppingController as ItemsBought">
      <h2>Already Bought:</h2>
      <ul>
-       <li ng-repeat="item in list2.items">Bought {{item.quantity}} of {{item.name}}(s)</li>
+       <li ng-repeat="item in ItemsBought.PurchasedList()">Bought {{item.quantity}} {{item.name}}</li>
      </ul>
-     <div ng-hide="!list2.Message" class="emptyMessage">{{list2.Message}}</div>
+
+     <div class="emptyMessage" ng-if="ItemsBought.PurchasedItemsEmpty()">Nothing bought yet.</div>
     </div>
   </div>
 </div>

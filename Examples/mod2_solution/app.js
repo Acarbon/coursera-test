@@ -1,128 +1,67 @@
-(function () {
-'use strict';
+(function(){
+  'ue strict';
 
-angular.module('ShoppingListCheckOff', [])
-.controller('ToBuyController', ToBuyController)
-.controller('AlreadyBoughtController', AlreadyBoughtController)
-.provider('ShoppingList', ShoppingListProvider)
-.config(Config);
+  angular.module('ShoppingListCheckOff', [])
+         .controller('ToBuyShoppingController', ToBuyShoppingController)
+         .controller('AlreadyBoughtShoppingController', AlreadyBoughtShoppingController)
+         .service('ShoppingListCheckOffService', ShoppingListCheckOffService);
 
-Config.$inject = ['ShoppingListProvider'];
-function Config(ShoppingListProvider) {
-  ShoppingListProvider.defaults.minItems = 0;
-}
+  ToBuyShoppingController.$inject = ['ShoppingListCheckOffService'];
+  AlreadyBoughtShoppingController.$inject= ['ShoppingListCheckOffService'];
 
-ToBuyController.$inject = ['ShoppingList'];
-function ToBuyController(ShoppingList) {
-  var list1 = this;
-
-  list1.items = ShoppingList.getItems();
-
-  list1.itemName = "";
-  list1.itemQuantity = "";
-
-
-  list.boughtItem = function (itemIndex) {
-  	ShoppingList.addItem(list1.itemName, list1.itemQuantity);
-     try {
-    ShoppingList.removeItem(itemIndex);
-    } catch (error) {
-      list1.errorMessage = error.message;
+  function ToBuyShoppingController(ShoppingListCheckOffService)
+  {
+    var ItemsToBuy = this;
+    ItemsToBuy.BuyItem = function(index)
+    {
+        ShoppingListCheckOffService.BuyItem(index);
     }
-  };
-}
-
-AlreadyBoughtController.$inject = ['ShoppingList'];
-function AlreadyBoughtController(ShoppingList) {
-  var list2 = this;
-
-  list2.items = ShoppingList.getItems2();
-}
-
-// If not specified, minItems assumed unlimited
-function ShoppingListService(minItems) {
-  var service = this;
-
-  // List of shopping items
-  var items = [
-  {
-    name: "Milk",
-    quantity: "2"
-  },
-  {
-    name: "Donuts",
-    quantity: "200"
-  },
-  {
-    name: "Cookies",
-    quantity: "300"
-  },
-  {
-    name: "Chocolate",
-    quantity: "5"
-  }];
-
-   var items2 = [
-  {
-    name: "Milk",
-    quantity: "2"
-  },
-  {
-    name: "Cookies",
-    quantity: "300"
-  }];
-
-
-  service.addItem = function (itemName, quantity) {
-      var item = {
-        name: itemName,
-        quantity: quantity
-      };
-      items2.push(item);
-      
+    ItemsToBuy.ShoppingListEmpty = function()
+    {
+      return ShoppingListCheckOffService.ItemsToBuyCount() <= 0;
+    }
+    ItemsToBuy.ShoppingList = function()
+    {
+      return ShoppingListCheckOffService.ItemsToBuy;
     }
   };
 
-  service.removeItem = function (itemIndex) {
-    items.splice(itemIndex, 1);
-    if ((minItems === undefined) ||
-        (minItems !== undefined) && (items.length === minItems)) {
-      throw new Error("Max items (" + minItems + ") reached.");
+  function AlreadyBoughtShoppingController(ShoppingListCheckOffService)
+  {
+    var ItemsBought = this;
+    ItemsBought.PurchasedItemsEmpty= function()
+    {
+      return ShoppingListCheckOffService.ItemsBoughtCount() <= 0;
     }
-  };
+    ItemsBought.PurchasedList = function()
+    {
+      return ShoppingListCheckOffService.ItemsBought;
+    }
+  }
 
-  service.getItems = function () {
-
-    return items;
-  };
-
-  service.getItems2 = function () {
-    return items2;
-      if ((minItems === undefined) ||
-        (minItems !== undefined) && (items2.length === minItems)) {
-      throw new Error("Max items (" + minItems + ") reached.");
-  };
-}
-
-
-function ShoppingListProvider() {
-  var provider = this;
-
-  provider.defaults = {
-    minItems: 100
-  };
-
-  provider.$get = function () {
-    var shoppingList = new ShoppingListService(provider.defaults.minItems);
-
-    return shoppingList;
-  };
-}
-
-
-
-
+  function ShoppingListCheckOffService()
+  {
+    var service = this;
+    service.ItemsBought = [];
+    service.ItemsToBuy  = [
+      { name: "milk",     quantity: 2 },
+      { name: "cake",    quantity: 8 },
+      { name: "bread",        quantity: 5 },
+      { name: "hamburguer", quantity: 4 },
+      { name: "water",     quantity: 10 },
+    ];
+    service.BuyItem = function(index)
+    {
+      service.ItemsBought.push(service.ItemsToBuy[index]);
+      service.ItemsToBuy.splice(index, 1);
+    }
+    service.ItemsToBuyCount = function()
+    {
+      return service.ItemsToBuy.length;
+    }
+    service.ItemsBoughtCount = function()
+    {
+      return service.ItemsBought.length;
+    }
+  }
 })();
-
-
-
