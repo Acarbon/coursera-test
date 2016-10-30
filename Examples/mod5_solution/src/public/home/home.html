@@ -1,0 +1,23 @@
+<div id="main-content" class="container">
+  <div class="jumbotron">
+    <img src="images/jumbotron_768.jpg" alt="Picture of restaurant" class="img-responsive visible-xs">
+  </div>
+  <div id="home-tiles" class="row">
+    <div class="col-md-4 col-sm-6 col-xs-12">
+      <a ui-sref="public.menu"><div id="menu-tile"><span>menu</span></div></a>
+    </div>
+    <div class="col-md-4 col-sm-6 col-xs-12">
+      <a ui-sref="public.menuitems({category: 'SP'})">
+        <div id="specials-tile"><span>specials</span></div>
+      </a>
+    </div>
+    <div class="col-md-4 col-sm-12 col-xs-12">
+      <a href="https://www.google.es/maps/place/China+Bistro/@32.647859,-115.4522751,18z/data=!4m8!1m2!2m1!1schina+bistro!3m4!1s0x0:0x8d9543ca4b7953fb!8m2!3d32.6477586!4d-115.451889" target="_blank">
+        <div id="map-tile">
+          <iframe src="https://www.google.es/maps/place/China+Bistro/@32.647859,-115.4522751,18z/data=!4m8!1m2!2m1!1schina+bistro!3m4!1s0x0:0x8d9543ca4b7953fb!8m2!3d32.6477586!4d-115.451889" width="100%" height="250" frameborder="0" style="border:0" allowfullscreen></iframe>
+          <span>map</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
