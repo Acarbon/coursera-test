@@ -1,0 +1,11 @@
+<div ng-if="uictrl.info.firstName">
+  First name: {{uictrl.info.firstName}}<br>
+  Last name: {{uictrl.info.lastName}}<br>
+  Email: {{uictrl.info.email}}<br>
+  Phone: {{uictrl.info.phone}}<br>
+  Favorite: {{uictrl.info.favorite.name + ', ' + uictrl.info.favorite.description}}<br>
+  <img ng-src="{{uictrl.basePath}}/images/{{uictrl.info.favorite.short_name}}.jpg" />
+</div>
+<div ng-if="!uictrl.info.firstName">
+  Not signed up yet, <a ui-sref="public.signUp">sign up now !</a>
+</div>
